@@ -44,11 +44,37 @@ services:
       - "${PORT:-2000:2000}"
       - "${PORT:-4000:4000}"
     restart: unless-stopped
+    volumes:
+      - ./auth:/srv/openstad/
     networks:
       - database
     depends_on:
       - "mysql"
 
+  frontend:
+    build: "frontend"
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/data:/app/data
+      - /app/public/uploads:/app/public/uploads
+    links:
+      - mongo:mongo
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_PORT_27017_TCP_ADDR: 'mongodb://mongo'
+      MONGODB_PORT_27017_TCP_PORT: '27017'
+      APOS_ALWAYS_COPY_ASSETS: '1'
+    restart: always
+
+  mongo:
+    image: 'mongo:latest'
+    volumes:
+      - 'mongo:/data/db'
+    ports:
+      - '127.0.0.1:27017:27017'
+    restart: always
 
   mysql:
     image: "mysql:5"
@@ -73,6 +99,7 @@ services:
 #
 volumes:
   database:
+  mongo:
 
 #
 # Networks section

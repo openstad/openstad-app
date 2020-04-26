@@ -15,6 +15,7 @@ version: '3'
 services:
   auth:
     build: auth
+    command: npm run dev
     environment:
       ENVIRONMENT: "production"
       DB_HOST: "${DB_HOST:-mysql}"
@@ -44,6 +45,10 @@ services:
       - "${PORT:-2000:2000}"
       - "${PORT:-4000:4000}"
     restart: unless-stopped
+    volumes:
+      - ./auth:/srv/openstad/
+      - /srv/openstad/node_modules
+      - /srv/openstad/certs
     networks:
       - database
     depends_on:
