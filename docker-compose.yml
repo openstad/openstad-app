@@ -6,17 +6,15 @@
 # This will create the MySQL Database and web server.
 #
 # Afterwards migrate the database by running the following commands:
-# - `docker-compose exec web knex migrate:latest --env production`
-# - `docker-compose exec web knex seed:run --env production`
+# - `docker-compose exec web auth migrate:latest --env production`
+# - `docker-compose exec web auth seed:run --env production`
 #
 
 ---
 version: '3'
 services:
   auth:
-    build:
-      context: .
-    image: auth  
+    build: auth
     environment:
       ENVIRONMENT: "production"
       DB_HOST: "${DB_HOST:-mysql}"
