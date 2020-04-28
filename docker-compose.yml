@@ -49,6 +49,41 @@ services:
     depends_on:
       - "mysql"
 
+  frontend:
+    build: frontend
+    ports:
+      - '4444:4444'
+    volumes:
+      - ./frontend/data:/app/data
+      - ./frontend/public/uploads:/app/public/uploads
+    links:
+      - mongo:mongo
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_PORT_27017_TCP_ADDR: 'mongodb://mongo'
+      MONGODB_PORT_27017_TCP_PORT: '27018'
+      APOS_ALWAYS_COPY_ASSETS: '1'
+      DEFAULT_DB: 'localhost'
+      APOS_WORKFLOW: 'ON'
+      PORT: '4444'
+      DEFAULT_DB: 'localhost2'
+      DEFAULT_HOST: 'localhost:4444'
+      LOGIN_CSM_BASIC_AUTH_USER: '1'
+      LOGIN_CSM_BASIC_AUTH_PASSWORD: '1'
+      IMAGE_API_URL: "${IMAGE_API_URL}"
+      IMAGE_API_ACCESS_TOKEN: "${IMAGE_API_ACCESS_TOKEN}"
+      API: "${IMAGE_API_ACCESS_TOKEN}"
+    restart: always
+
+  mongo:
+    image: 'mongo:latest'
+    volumes:
+      - 'mongo:/data/db'
+    ports:
+      - '127.0.0.1:27018:27018'
+    restart: always
+
 
   mysql:
     image: "mysql:5"
@@ -73,6 +108,7 @@ services:
 #
 volumes:
   database:
+  mongo:
 
 #
 # Networks section
