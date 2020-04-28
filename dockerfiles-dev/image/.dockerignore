@@ -1,6 +1,10 @@
+
 .git
-Dockerfile
-.dockerignore
-.gitignore
-data
-public/uploads
+.sass-cache
+build
+/node_modules/
+/test/aria/node_modules/
+/test/e2e/node_modules/
+coverage/
+coverage-legacy/
+dist/

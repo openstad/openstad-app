@@ -30,7 +30,6 @@ RUN npm install
 RUN npm install knex -g
 
 
-
 # -------------------------------------------------
 # Remove unused packages only used for building.
 # -------------------------------------------------

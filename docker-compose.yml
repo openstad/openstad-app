@@ -49,6 +49,23 @@ services:
     depends_on:
       - "mysql"
 
+  image:
+      build: image
+      environment:
+        DB_NAME: 'image'
+        DB_USER: 'root'
+        DB_PASSWORD: '123456'
+        PORT_API: '3333'
+        PORT_IMAGE_SERVER: '7777'
+        APP_URL: 'http://localhost:3333'
+      ports:
+        - "${PORT:-3333:3333}"
+      restart: unless-stopped
+      networks:
+        - database
+      depends_on:
+        - "mysql"
+
   frontend:
     build: frontend
     ports:
