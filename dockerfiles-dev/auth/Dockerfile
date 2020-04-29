@@ -28,6 +28,8 @@ RUN mv privatekey.pem /srv/openstad/certs/
 # ----------------------------------
 RUN npm install
 RUN npm install knex -g
+RUN knex migrate:latest
+
 
 
 # -------------------------------------------------
