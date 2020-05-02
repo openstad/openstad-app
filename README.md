@@ -84,3 +84,40 @@ FRONTEND_MONGO_SCHEME=mongodb://mongo
 FRONTEND_MONGO_PORT=27017
 FRONTEND_MINIFY_JS=27017
 ```
+
+## Running migrations and seeds
+For now, for dev, the migrations have to be run manually.
+
+There are a few settings in the databases that need to be set correctly for it all
+to work together. This works in combination with above .env values.
+Any changes in .env values after running the seeds might require database changess.
+
+1. Create the api site entries (runs both basic migrations and seeds.)
+```
+docker-compose exec api node reset.js
+```
+
+2.1 Create the tables for the Auth server
+```
+docker-compose exec image knex migrate:latest
+```
+
+2.2 Seed the table for the Auth server.
+```
+docker-compose exec image knex seed:run
+```
+
+3.1 Create the tables for the Image server
+```
+docker-compose exec image knex migrate:latest
+```
+
+3.2 Seed the tables for the Image server. This seed run will empty the tables, so don't use once running.
+```
+docker-compose exec image knex seed:run
+```
+
+## Mysql
+Docker compose creates the databases set in .env file on first run.
+If name is changed you will either have to recreate the mysql volume, or manually change or add the database.
+Port 3310 is open, so you can access docker database on http://localhost:3310.
