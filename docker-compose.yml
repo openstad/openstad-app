@@ -1,16 +1,5 @@
 #
-# Docker Compose file for MijnOpenstad
-#
-# Extra notes:
-# - You can run all servers by running `docker-compose up -d`.
-# First time will create the MySQL Database for image, auth anda api2
-# Migrate
-#
-# To set up first time user and database for convenience
-# Afterwards migrate the database by running the following commands:
-# - `docker-compose exec auth migrate:latest --env production`
-# - `docker-compose exec auth seed:run --env production`
-# - `docker-compose exec api node reset.js --env production`
+# Docker Compose file for Openstad app
 #
 
 ---
@@ -21,7 +10,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_ROOT_DATABASE}"
-      MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     expose:
@@ -111,7 +99,7 @@ services:
       API_DATABASE_HOST: "${MYSQL_HOST}"
       API_EMAILADDRESS: "${API_EMAILADDRESS}"
       API_EXPRESS_PORT: "${API_PORT}"
-      MAIL_FROM: "${API_MAIL_FROM}"
+      API_MAIL_FROM: "${API_MAIL_FROM}"
       API_MAIL_TRANSPORT_SMTP_PORT: "${MAIL_TRANSPORT_SMTP_PORT}"
       API_MAIL_TRANSPORT_SMTP_HOST: "${MAIL_TRANSPORT_SMTP_HOST}"
       API_MAIL_TRANSPORT_SMTP_REQUIRESSL: "${MAIL_TRANSPORT_SMTP_REQUIRESSL}"
@@ -122,6 +110,7 @@ services:
       API_SECURITY_SESSIONS_ONLYSECURE: "${API_SECURITY_SESSIONS_ONLYSECURE}"
       API_AUTHORIZATION_JWTSECRET: "${API_AUTHORIZATION_JWTSECRET}"
       API_AUTHORIZATION_FIXEDAUTHTOKENS: "${API_AUTHORIZATION_FIXEDAUTHTOKENS}"
+      DEV_SITE_DOMAIN: "${DEV_SITE_DOMAIN}"
     expose:
       - 8111
     ports:
