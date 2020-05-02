@@ -23,10 +23,18 @@ services:
       MYSQL_DATABASE: "${MYSQL_ROOT_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     expose:
       - "3306"
       - "33060"
     restart: unless-stopped
+    ports:
+      - "3310:3306"
+    entrypoint:
+      sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS ${AUTH_DB_NAME}; CREATE DATABASE IF NOT EXISTS ${IMAGE_DB_NAME}; CREATE DATABASE IF NOT EXISTS ${API_DATABASE};' > /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      "
     volumes:
       - database:/var/lib/mysql
     networks:
@@ -42,7 +50,7 @@ services:
       APP_URL: "${IMAGE_APP_URL}"
       #needs to best to network name in depends_on of mysql
       DB_HOST: "${MYSQL_HOST}"
-      DB_USER: "${MYSQL_USER}"
+      DB_USER: "root"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
       DB_NAME: "${IMAGE_DB_NAME}"
     volumes:
@@ -64,7 +72,7 @@ services:
       APP_URL: "${AUTH_APP_URL}"
       #db values
       DB_NAME: "${AUTH_DB_NAME}"
-      DB_USER: "${MYSQL_USER}"
+      DB_USER: "root"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
       DB_HOST: "${MYSQL_HOST}"
       #mail values
@@ -97,7 +105,7 @@ services:
     environment:
       API_URL: "${API_URL}"
       API_HOSTNAME: "${API_HOSTNAME}"
-      API_DATABASE_USER: "${MYSQL_USER}"
+      API_DATABASE_USER: "root"
       API_DATABASE_PASSWORD: "${MYSQL_PASSWORD}"
       API_DATABASE_DATABASE: "${API_DATABASE}"
       API_DATABASE_HOST: "${MYSQL_HOST}"
