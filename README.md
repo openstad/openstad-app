@@ -14,19 +14,15 @@ When the work is finished will allow with docker to run all servers with one com
 
 Currently dockerfiles or not in the master branches of the included repo's so will not work out of the box.
 
-Example .env file for production
-
-
+Example .env file for development:
 
 ```
-#!/bin/bash
-
 # MYSQL settings, host should be set to mysql not localhost (corresponding to name in compose file)
 MYSQL_HOST=mysql
 MYSQL_USER=user
 MYSQL_PASSWORD=xxxxxxx
 MYSQL_ROOT_PASSWORD=xxxxxxx
-#this is probably unnecessary
+# this is probably unnecessary
 MYSQL_ROOT_DATABASE=dummy
 # for dev non https
 COOKIE_SECURE_OFF=yes
@@ -37,8 +33,8 @@ SESSION_SECRET=xyxyxyxy
 #mail
 MAIL_TRANSPORT_SMTP_HOST=smtp.gmail.com
 MAIL_TRANSPORT_SMTP_HOST=true
-MAIL_TRANSPORT_SMTP_AUTH_PASS=opensta
-MAIL_TRANSPORT_SMTP_AUTH_USER=admin@openstad.org
+MAIL_TRANSPORT_SMTP_AUTH_PASS=1234
+MAIL_TRANSPORT_SMTP_AUTH_USER=openstad@openstad.org
 MAIL_TRANSPORT_SMTP_PORT=587
 MAIL_TRANSPORT_SMTP_REQUIRESSL=true
 
@@ -52,8 +48,13 @@ API_MAIL_FROM=`Openstad Dev`
 API_NOTIFICATIONS_ADMIN_EMAILADDRESS=admin@openstad.org
 API_SECURITY_SESSIONS_COOKIENAME=cookies
 API_SECURITY_SESSIONS_ONLYSECURE=false
-API_AUTHORIZATION_JWTSECRET=xxxxx
-API_AUTHORIZATION_FIXEDAUTHTOKENS=xxxxxxx
+API_AUTHORIZATION_JWTSECRET=123456
+#this seem a bit weird. A user is created in the DB for the CMS to query the api. The token is necessary for identification
+#token here has to correspond with FRONTEND_SITE_API_KEY
+API_AUTHORIZATION_FIXEDAUTHTOKENS=[{"token": "xxxxxxx", "userId": "2"}]
+
+# this is only used for generating seed with exec command
+DEV_SITE_DOMAIN=localhost:4444
 
 #images
 IMAGE_DB_NAME=image
@@ -79,17 +80,21 @@ FRONTED_PORT=4444
 #makes a database for the first site
 FRONTED_DEFAULT_MONGO_DB=localhost2
 FRONTED_APP_URL=http://localhost:4444
+
 #allows to connect to API as admin user
-FRONTEND_SITE_API_KEY=xxxxxxx
+#FRONTEND_SITE_API_KEY=123456
 FRONTEND_APOS_WORKFLOW=ON
 #this is for the /login route but not used anymore in new verions
 FRONTEND_LOGIN_CSM_BASIC_AUTH_USER=me
 FRONTEND_LOGIN_CSM_BASIC_AUTH_PASSWORD=password
 #standard it links to local docker api, sometimes it's useful to link to a staging or live url
-FRONTEND_API_URL=http://localhost:4444
+FRONTEND_API_URL=http://api:8111
 FRONTEND_MONGO_SCHEME=mongodb://mongo
+FRONTEND_MONGO_DB_HOST=mongo
 FRONTEND_MONGO_PORT=27017
 FRONTEND_MINIFY_JS=27017
+FRONTEND_SITE_API_KEY=xxxxxxx
+
 ```
 
 ## Running migrations and seeds
@@ -129,3 +134,11 @@ Docker compose creates the databases set in .env file on first run.
 If name is changed you will either have to recreate the mysql volume, or manually change or add the database.
 Port 3310 is open, so you can access docker database on http://localhost:3310, for instance with sqlpro.
 Or log into the docker shell: docker-compose exec mysql sh
+
+## Reloading .env values
+Now even though it's a proposed practice by docker, docker-compose won't reload env values if you change.
+For all containers:
+docker-compose up --force-recreate
+
+For one container
+docker-compose up --force-recreate frontend
