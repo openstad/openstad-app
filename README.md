@@ -74,7 +74,7 @@ AUTH_PORT=4000
 AUTH_APP_URL=http://localhost:4000
 AUTH_MAIL_FROM_NAME=`Authenticatie Openstad`
 AUTH_MAIL_FROM_MAIL=`auth@openstad.org`
-AUTH_INTERNAL_SERVER_URL=http://api:4000
+AUTH_INTERNAL_SERVER_URL=http://auth:4000
 
 # this wont work for images if it's a localhost of course,
 # when practically necessary I normally just take staging url
