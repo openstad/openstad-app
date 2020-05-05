@@ -12,6 +12,7 @@ services:
       MYSQL_DATABASE: "${MYSQL_ROOT_DATABASE}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
     expose:
       - "3306"
       - "33060"
@@ -41,6 +42,8 @@ services:
       DB_USER: "root"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
       DB_NAME: "${IMAGE_DB_NAME}"
+      FIRST_IMAGE_API_ACCESS_TOKEN: "${IMAGE_API_ACCESS_TOKEN}"
+      COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
     volumes:
       - ./image/images:/app/images
     ports:
@@ -67,7 +70,7 @@ services:
       MAIL_SERVER_URL: "${MAIL_TRANSPORT_SMTP_HOST}"
       MAIL_SERVER_PORT: "${MAIL_TRANSPORT_SMTP_PORT}"
       MAIL_SERVER_SECURE: "${MAIL_TRANSPORT_SMTP_REQUIRESSL}"
-      MAIL_SERVER_PASSWORD: ${MAIL_TRANSPORT_SMTP_AUTH_PASS}"
+      MAIL_SERVER_PASSWORD: "${MAIL_TRANSPORT_SMTP_AUTH_PASS}"
       MAIL_SERVER_USER_NAME: "${MAIL_TRANSPORT_SMTP_AUTH_USER}"
       SESSION_SECRET: "${SESSION_SECRET}"
       EMAIL_ASSETS_URL: "${AUTH_EMAIL_ASSETS_URL}"
@@ -75,6 +78,11 @@ services:
       FROM_NAME: "${AUTH_MAIL_FROM_NAME}"
       FROM_EMAIL: "${AUTH_MAIL_FROM_MAIL}"
       COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
+      AUTH_FIRST_CLIENT_ID: "${AUTH_FIRST_CLIENT_ID}"
+      AUTH_FIRST_CLIENT_SECRET: "${AUTH_FIRST_CLIENT_SECRET}"
+      AUTH_FIRST_CLIENT_URL: "${FRONTED_APP_URL}"
+      AUTH_FIRST_CLIENT_LOGIN_CODE: "${AUTH_FIRST_CLIENT_LOGIN_CODE}"
+
     ports:
       - ${AUTH_PORT}:${AUTH_PORT}
     restart: unless-stopped
@@ -110,7 +118,12 @@ services:
       API_SECURITY_SESSIONS_ONLYSECURE: "${API_SECURITY_SESSIONS_ONLYSECURE}"
       API_AUTHORIZATION_JWTSECRET: "${API_AUTHORIZATION_JWTSECRET}"
       API_AUTHORIZATION_FIXEDAUTHTOKENS: "${API_AUTHORIZATION_FIXEDAUTHTOKENS}"
-      DEV_SITE_DOMAIN: "${API_MAIL_FROM}"
+      DEV_SITE_DOMAIN: "${DEV_SITE_DOMAIN}"
+      AUTH_URL: "${AUTH_APP_URL}"
+      AUTH_INTERNAL_SERVER_URL: "${AUTH_INTERNAL_SERVER_URL}"
+      AUTH_FIRST_CLIENT_ID: "${AUTH_FIRST_CLIENT_ID}"
+      AUTH_FIRST_CLIENT_SECRET: "${AUTH_FIRST_CLIENT_SECRET}"
+      AUTH_FIRST_CLIENT_LOGIN_CODE: "${AUTH_FIRST_CLIENT_LOGIN_CODE}"
     expose:
       - 8111
     ports:
@@ -128,11 +141,6 @@ services:
     build: frontend
     ports:
       - ${FRONTED_PORT}:${FRONTED_PORT}
-    volumes:
-       - ./frontend:/frontend
-    #  - ./frontend/data:/app/data
-  #    - ./frontend/public/uploads:/app/public/uploads
-
     environment:
       PORT: "${FRONTED_PORT}"
       DB_HOST: "${FRONTEND_MONGO_DB_HOST}"
@@ -152,15 +160,10 @@ services:
       LOGIN_CSM_BASIC_AUTH_PASSWORD: "${FRONTEND_LOGIN_CSM_BASIC_AUTH_PASSWORD}"
       MINIFY_JS: "${FRONTEND_MINIFY_JS}"
       COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
-      AUTH_FIRST_CLIENT_ID: "${AUTH_FIRST_CLIENT_ID}"
-      AUTH_FIRST_CLIENT_SECRET: "${AUTH_FIRST_CLIENT_ID}"
-      AUTH_FIRST_CLIENT_URL: "${AUTH_FIRST_CLIENT_URL}"
-      AUTH_FIRST_CLIENT_LOGIN_CODE: "${AUTH_FIRST_CLIENT_LOGIN_CODE}"
-    restart: always
     volumes:
-      - ./auth:/srv/openstad/
-      - /srv/openstad/node_modules
-      - /srv/openstad/certs
+      - ./frontend/data:/app/data
+      - ./frontend/public/uploads:/app/public/uploads
+    restart: always
     networks:
       - database
     links:
