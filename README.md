@@ -17,6 +17,7 @@ Currently dockerfiles or not in the master branches of the included repo's so wi
 Example .env file for development:
 
 ```
+
 # MYSQL settings, host should be set to mysql not localhost (corresponding to name in compose file)
 MYSQL_HOST=mysql
 MYSQL_USER=user
@@ -53,9 +54,6 @@ API_AUTHORIZATION_JWTSECRET=123456
 #token here has to correspond with FRONTEND_SITE_API_KEY
 API_AUTHORIZATION_FIXEDAUTHTOKENS=[{"token": "xxxxxxx", "userId": "2"}]
 
-# this is only used for generating seed with exec command
-DEV_SITE_DOMAIN=localhost:4444
-
 #images
 IMAGE_DB_NAME=image
 IMAGE_APP_URL=http://localhost:3333
@@ -78,7 +76,7 @@ AUTH_EMAIL_ASSETS_URL=http://localhost:4000
 #frontend
 FRONTED_PORT=4444
 #makes a database for the first site
-FRONTED_DEFAULT_MONGO_DB=localhost2
+FRONTED_DEFAULT_MONGO_DB=default_db
 FRONTED_APP_URL=http://localhost:4444
 
 #allows to connect to API as admin user
@@ -88,13 +86,20 @@ FRONTEND_APOS_WORKFLOW=ON
 FRONTEND_LOGIN_CSM_BASIC_AUTH_USER=me
 FRONTEND_LOGIN_CSM_BASIC_AUTH_PASSWORD=password
 #standard it links to local docker api, sometimes it's useful to link to a staging or live url
-FRONTEND_API_URL=http://api:8111
+#the api calls are made over internal network
+FRONTEND_INTERNAL_API_URL=http://api:8111
+#redirects are done through browser that need to go over public network
+FRONTEND_API_URL=http://localhost:8111
 FRONTEND_MONGO_SCHEME=mongodb://mongo
 FRONTEND_MONGO_DB_HOST=mongo
 FRONTEND_MONGO_PORT=27017
 FRONTEND_MINIFY_JS=27017
 FRONTEND_SITE_API_KEY=xxxxxxx
 
+#GENERATION VALUES, these are used for generating values in migration
+DEV_SITE_DOMAIN=localhost:4444
+AUTH_FIRST_CLIENT_ID=cccccc
+AUTH_FIRST_CLIENT_SECRET=xxxxxxxx
 ```
 
 ## Running migrations and seeds

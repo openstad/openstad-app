@@ -1,1 +1,8 @@
+#/locales
+npm-debug.log
+node_modules
+.jshintrc
 .env
+.idea/
+store.json
+tmp
