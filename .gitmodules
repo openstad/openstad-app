@@ -7,3 +7,6 @@
 [submodule "auth"]
 	path = auth
 	url = https://github.com/Amsterdam/openstad-oauth2-server
+[submodule "image"]
+	path = image
+	url = https://github.com/Amsterdam/openstad-image-server
