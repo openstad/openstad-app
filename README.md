@@ -71,7 +71,7 @@ IMAGE_PORT_STEAM=7777
 #auth
 AUTH_DB_NAME=auth
 AUTH_PORT=4000
-AUTH_APP_URL=http://auth:4000
+AUTH_APP_URL=http://localhost:4000
 AUTH_MAIL_FROM_NAME=`Authenticatie Openstad`
 AUTH_MAIL_FROM_MAIL=`auth@openstad.org`
 AUTH_INTERNAL_SERVER_URL=http://api:4000
