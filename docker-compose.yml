@@ -137,7 +137,7 @@ services:
       - "mysql"
 
   frontend:
-    command: npm run dev
+    #command: npm run dev
     build: frontend
     ports:
       - ${FRONTED_PORT}:${FRONTED_PORT}
@@ -161,6 +161,7 @@ services:
       MINIFY_JS: "${FRONTEND_MINIFY_JS}"
       COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
     volumes:
+      - ./frontend/lib:/app/lib
       - ./frontend/data:/app/data
       - ./frontend/public/uploads:/app/public/uploads
     restart: always

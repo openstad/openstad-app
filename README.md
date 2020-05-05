@@ -26,7 +26,7 @@ MYSQL_PASSWORD=xxxxxxx
 MYSQL_ROOT_PASSWORD=xxxxxxx
 # this is probably unnecessary
 MYSQL_ROOT_DATABASE=dummy
-# for dev non https
+#for dev turn off secure sessions, should be on in prod!
 COOKIE_SECURE_OFF=yes
 
 #general
@@ -68,6 +68,7 @@ AUTH_PORT=4000
 AUTH_APP_URL=http://localhost:4000
 AUTH_MAIL_FROM_NAME=`Authenticatie Openstad`
 AUTH_MAIL_FROM_MAIL=`auth@openstad.org`
+AUTH_INTERNAL_SERVER_URL=http://api:4000
 
 # this wont work for images if it's a localhost of course,
 # when practically necessary I normally just take staging url
@@ -94,13 +95,17 @@ FRONTEND_API_URL=http://localhost:8111
 FRONTEND_MONGO_SCHEME=mongodb://mongo
 FRONTEND_MONGO_DB_HOST=mongo
 FRONTEND_MONGO_PORT=27017
-FRONTEND_MINIFY_JS=27017
+FRONTEND_MINIFY_JS=OFF
 FRONTEND_SITE_API_KEY=xxxxxxx
+
 
 #GENERATION VALUES, these are used for generating values in migration
 DEV_SITE_DOMAIN=localhost:4444
+#this will set these values to the first client if you run the auth seed, test_admin will be login code
 AUTH_FIRST_CLIENT_ID=cccccc
 AUTH_FIRST_CLIENT_SECRET=xxxxxxxx
+AUTH_FIRST_CLIENT_URL=xxxxxxxx
+AUTH_FIRST_CLIENT_LOGIN_CODE=test_openstad
 ```
 
 
@@ -120,7 +125,7 @@ to work together. This works in combination with above .env values.
 Any changes in .env values after running the seeds might require database changes.
 
 
-1. Create the api site entries (runs both basic migrations and seeds.)
+1. Create the api site entries (runs both basic migrations and seeds.). . This seed run will empty the tables, so don't use once running.
 ```
 docker-compose exec api node reset.js
 ```
@@ -130,7 +135,7 @@ docker-compose exec api node reset.js
 docker-compose exec auth knex migrate:latest
 ```
 
-2.2 Seed the table for the Auth server.
+2.2 Seed the table for the Auth server. . This seed run will empty the tables, so don't use once running.
 ```
 docker-compose exec auth knex seed:run
 ```
