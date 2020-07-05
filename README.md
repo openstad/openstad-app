@@ -5,11 +5,12 @@ Todo:
 - Update Dockerfiles in master branches of all GIT repo
 - Mount CMS frontend
 
-Dockerfiles and docker compose working for DEV machine.
+Dockerfiles and docker compose working for DEV machine. This setup is meant for development work, for deploying to production we have a helm repository.
+
 
 A collection of subrepo's of the main servers of the Openstad application.
-
-Currently dockerfiles or not in the master branches of the included repo's so will not work out of the box.
+Currently the branches are on the development branches.
+Soon we will update all the code to master.
 
 Since this repo is working with subrepo's make sure you pull all of them first time, for instance:
 
@@ -25,22 +26,26 @@ Create a .env file based upon the .env for development, put it in the root next 
 
 
 ## Start up docker compose
-For development install and start docker desktop.
+Start up docker-compose, it will build the images and start the container.
+The first time building the images might take a while.
+The argument --d tells docker-compose to run in the background
 
 ```
 docker-compose up --d
 ```
 
-
-## Running migrations and seeds
+## Creating database tables and filling them
 For now, for dev, the migrations have to be run manually.
-
 There are a few settings in the databases that need to be set correctly for it all
 to work together. This works in combination with above .env values.
 Any changes in .env values after running the seeds might require database changes.
 
 
-1. Create the api site entries (runs both basic migrations and seeds.). . This seed run will empty the tables, so don't use once running.
+1.1 Create the api site entries (runs both basic migrations and seeds.). This seed run will empty the tables, so don't use once running.
+
+It will create the database based based upon the definitions of sequalizer, then it will set all migrations to marked.
+
+Any future changes in database can be run run wih node migrate.js.
 ```
 docker-compose exec api node reset.js
 ```
@@ -50,7 +55,7 @@ docker-compose exec api node reset.js
 docker-compose exec auth knex migrate:latest
 ```
 
-2.2 Seed the table for the Auth server. . This seed run will empty the tables, so don't use once running.
+2.2 Seed the table for the Auth server. This seed run will empty the tables, so don't use once running.
 ```
 docker-compose exec auth knex seed:run
 ```
@@ -80,7 +85,16 @@ If name is changed you will either have to recreate the mysql volume, or manuall
 Port 3310 is open, so you can access docker database on http://localhost:3310, for instance with sqlpro.
 Or log into the docker shell: docker-compose exec mysql sh
 
-## Reloading .env values
+## Docker-compose background info
+
+### Be patient
+Everything takes a bit longer, sometimes it takes a while,
+
+```
+docker system prune
+```
+
+### Reloading .env values
 docker-compose doesn't always seem to reload env values if you change the .env file.
 
 To force it:
@@ -90,3 +104,7 @@ docker-compose up --force-recreate
 
 For one container
 docker-compose up --force-recreate frontend
+
+
+### Rebuilding image
+Sometimes it's necessary to rebuild
