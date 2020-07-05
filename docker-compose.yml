@@ -29,7 +29,6 @@ services:
     networks:
       - database
 
-  #node image serve
   image:
     build: image
     environment:
@@ -48,6 +47,33 @@ services:
       - ./image/images:/app/images
     ports:
       - ${IMAGE_PORT_API}:${IMAGE_PORT_API}
+    restart: unless-stopped
+    networks:
+      - database
+    depends_on:
+      - "mysql"
+
+  admin:
+    command: npm run dev
+    build: admin
+    environment:
+      SITE_ID: "1"
+      BASIC_AUTH_USER: "user"
+      BASIC_AUTH_PASSWORD: "pass"
+      COOKIE_SECURE_OFF: "yes"
+      FRONTEND_URL: "${DEV_SITE_DOMAIN}"
+      COOKIE_SECRET: "${COOKIE_SECRET}"
+      SESSION_SECRET: "${SESSION_SECRET}"
+      MONGO_DB_HOST: "${FRONTEND_MONGO_DB_HOST}"
+      MONGO_DB_PORT: "${FRONTEND_MONGO_PORT}"
+      SITE_API_KEY: "${FRONTEND_SITE_API_KEY}"
+      APP_URL: "${APP_URL}"
+      API_URL: "${API_URL}"
+      USER_API: "${AUTH_APP_URL}"
+      USER_API_CLIENT_ID: "${AUTH_FIRST_CLIENT_ID}"
+      USER_API_CLIENT_SECRET: "${AUTH_FIRST_CLIENT_SECRET}"
+    ports:
+      - ${AUTH_PORT}:${AUTH_PORT}
     restart: unless-stopped
     networks:
       - database

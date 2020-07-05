@@ -10,3 +10,6 @@
 [submodule "image"]
 	path = image
 	url = https://github.com/Amsterdam/openstad-image-server
+[submodule "admin"]
+	path = admin
+	url = https://github.com/Amsterdam/openstad-management-panel
