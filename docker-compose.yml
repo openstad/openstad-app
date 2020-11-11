@@ -168,7 +168,7 @@ services:
       - "mysql"
 
   frontend:
-    #command: npm run dev
+    command: npm run dev
     build: frontend
     ports:
       - ${FRONTED_PORT}:${FRONTED_PORT}
@@ -193,6 +193,11 @@ services:
       COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
     volumes:
       - ./frontend/lib:/home/app/lib
+      - ./frontend/public:/home/app/public
+      - ./frontend/packages/cms/lib:/home/app/packages/cms/lib
+      - ./frontend/packages/cms/views:/home/app/packages/cms/views
+      - ./frontend/packages/cms/services:/home/app/packages/cms/services
+      - ./frontend/packages/cms/public:/home/app/packages/cms/public
       - ./frontend/data:/home/app/data
       - ./frontend/public/uploads:/app/public/uploads
     restart: always

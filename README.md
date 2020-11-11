@@ -85,10 +85,31 @@ If name is changed you will either have to recreate the mysql volume, or manuall
 Port 3310 is open, so you can access docker database on http://localhost:3310, for instance with sqlpro.
 Or log into the docker shell: docker-compose exec mysql sh
 
-## Docker-compose background info
+## Some usefull commands
+
+### Go into shell
+```
+docker-compose exec [service] bash
+```
+
+Example
+```
+docker-compose exec auth bash
+```
+
+### Run npm install, safe a rebuild
+
+Sometimes with update it's necessary to update the node modules.
+It's a lot faster to directly install them instead of rebuilding your docker image.
+```
+docker-compose exec auth npm i
+```
+### Run npm install, safe a rebuild
+
 
 ### Be patient
-Everything takes a bit longer, sometimes it takes a while,
+Everything takes a bit longer, sometimes it takes a while to build a container. D
+If you force stop docker-compose while shutting down you will getting dangling images, this is how to clean them up.
 
 ```
 docker system prune
