@@ -45,6 +45,7 @@ services:
       COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
     volumes:
       - ./image/images:/app/images
+      - /home/app/node_modules
     ports:
       - ${IMAGE_PORT_API}:${IMAGE_PORT_API}
     restart: unless-stopped
@@ -162,6 +163,9 @@ services:
     restart: unless-stopped
     volumes:
         - ./api/src:/home/app/src
+        - ./api/config:/home/app/config
+        - ./api/fixtures:/home/app/fixtures
+        - /home/app/node_modules
     networks:
       - database
     depends_on:
@@ -200,6 +204,9 @@ services:
       - ./frontend/packages/cms/public:/home/app/packages/cms/public
       - ./frontend/data:/home/app/data
       - ./frontend/public/uploads:/app/public/uploads
+      - ./frontend/package.json:/app/package.json
+      - /home/app/node_modules
+
     restart: always
     networks:
       - database

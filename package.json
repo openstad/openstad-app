@@ -1,0 +1,22 @@
+{
+  "name": "openstad-app",
+  "version": "0.9.0",
+  "description": "Bundled version of all openstad apps",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amsterdam/openstad-app.git"
+  },
+  "author": "Tosh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Amsterdam/openstad-app/issues"
+  },
+  "homepage": "https://github.com/Amsterdam/openstad-app#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
