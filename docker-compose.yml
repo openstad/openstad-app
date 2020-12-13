@@ -1,5 +1,6 @@
 #
-# Docker Compose file for Openstad app
+# Docker Compose file for Openstad app, i
+# Is working, but not actively recommended for development, the mounts do not work nicely with de frontend app, very heavy and slow
 #
 
 ---

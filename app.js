@@ -1,15 +1,10 @@
-var { exec } = require('child_process'); // native in nodeJs
-const {frontendConfig, apiConfig, authConfig, adminConfig, imageConfig}  = require('./config.js');
+/**
+ * Main app script command which runs all nodejs servers at once
 
-
-const objectToAline = (obj) => {
-  return Object.keys(obj).map(function (key) {
-    return "" + key + "='" + obj[key] +"'"; // line break for wrapping only
-  }).join(" ");
-}
-
-console.log('objectToAline', objectToAline(frontendConfig))
-
+ */
+const { exec } = require('child_process'); // native in nodeJs
+const { frontendConfig, apiConfig, authConfig, adminConfig, imageConfig } = require('./config.js');
+const { objectToAline } = require('./utils.js');
 
 // commands list
 const commands = [
@@ -38,10 +33,7 @@ const commands = [
 
 // run command
 function runCommand(command, name, callback) {
-    console.log('command 1', command);
-
     child_process.exec(command, function (error, stdout, stderr) {
-        console.log('command2 ', command, error);
         if (stderr) {
             callback(stderr, null);
         } else {
@@ -69,17 +61,6 @@ async function execWaitForOutput(command, execOptions = {}) {
 async function   main() {
     commands.forEach(async (element) => {
         await execWaitForOutput(element.command);
-
-        /*
-        console.log('element', element)
-        runCommand(element.command, element.name, (err, res) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log('running:', res);
-            }
-        });
-        */
     });
 }
 

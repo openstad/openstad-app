@@ -1,3 +1,7 @@
+/**
+ * Map the .env value correctly to all env values per server, this will be added to every startup command
+ * @type {Object}
+ */
 require('dotenv').config();
 
 exports.frontendConfig = {
