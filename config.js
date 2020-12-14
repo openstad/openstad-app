@@ -1,6 +1,6 @@
 /**
- * Map the .env value correctly to all env values per server, this will be added to every startup command
- * @type {Object}
+ * Map the .env value correctly to all env values per server, this will be added to every startup command by app.js
+ *
  */
 require('dotenv').config();
 
@@ -54,6 +54,8 @@ exports.apiConfig = {
   AUTH_FIRST_CLIENT_SECRET: process.env.AUTH_FIRST_CLIENT_SECRET,
   AUTH_FIRST_CLIENT_LOGIN_CODE: process.env.AUTH_FIRST_CLIENT_LOGIN_CODE,
   MYSQL_ST_GEO_MODE:  process.env.MYSQL_ST_GEO_MODE,
+  AUTH_ADMIN_CLIENT_ID: process.env.AUTH_ADMIN_CLIENT_ID,
+  AUTH_ADMIN_CLIENT_SECRET: process.env.AUTH_ADMIN_CLIENT_SECRET,
 }
 
 exports.authConfig = {
@@ -88,8 +90,8 @@ exports.authConfig = {
 exports.adminConfig = {
   SITE_ID: "1",
   PORT: process.env.ADMIN_PORT,
-  BASIC_AUTH_USER: "user",
-  BASIC_AUTH_PASSWORD: "pass",
+  BASIC_AUTH_USER: process.env.ADMIN_BASIC_AUTH_USER,
+  BASIC_AUTH_PASSWORD: process.env.ADMIN_BASIC_AUTH_PASSWORD,
   COOKIE_SECURE_OFF: "yes",
   FRONTEND_URL: process.env.FRONTEND_URL,
   COOKIE_SECRET: process.env.COOKIE_SECRET,
@@ -100,8 +102,8 @@ exports.adminConfig = {
   APP_URL: process.env.ADMIN_URL,
   API_URL: process.env.API_URL,
   USER_API: process.env.AUTH_APP_URL,
-  USER_API_CLIENT_ID: process.env.AUTH_FIRST_CLIENT_ID,
-  USER_API_CLIENT_SECRET: process.env.AUTH_FIRST_CLIENT_SECRET,
+  USER_API_CLIENT_ID: process.env.AUTH_ADMIN_CLIENT_ID,
+  USER_API_CLIENT_SECRET: process.env.AUTH_ADMIN_CLIENT_SECRET,
 }
 
 exports.imageConfig = {
