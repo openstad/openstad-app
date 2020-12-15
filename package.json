@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "npm run test"
+    "test": "npm run test",
+    "db:install": "node install-databases.js"
   },
   "repository": {
     "type": "git",

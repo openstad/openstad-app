@@ -19,11 +19,11 @@ $ open http://localhost:4444
 
 ## WIP: Setup environment (node)
 
-Running openstad via node
+Running openstad via node:
 
 ```sh
-# Install and use node v10
-$ nvm install 10 && nvm use 10
+# Setup environment
+$ source setenv
 # Install dependencies
 $ npm install --no-optional
 # Start services

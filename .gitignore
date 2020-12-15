@@ -7,3 +7,5 @@ node_modules
 store.json
 tmp
 .DS_Store
+docker-compose.override.yml
+setenv.*

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# shared settings NOT added to git
+if [ -f ./setenv.shared ]; then
+  source ./setenv.shared
+fi
+
+# private settings NOT added to git
+if [ -f ./setenv.${USER} ]; then
+  source ./setenv.${USER}
+fi
+
+# Make sure we have node and npm
+if [ ! $(command -v nvm) ]; then
+  echo "Please install NVM (Node Version Manager) by running this command:"
+  echo "$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.37.2/install.sh | bash"
+  echo "Or by following installation instructions on: https://github.com/nvm-sh/nvm"
+  return
+fi
+
+# setup correct node version
+nvm install
+nvm use
