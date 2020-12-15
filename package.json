@@ -4,6 +4,7 @@
   "description": "Bundled version of all openstad apps",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "npm run test"
   },
   "repository": {
@@ -17,6 +18,11 @@
   },
   "homepage": "https://github.com/Amsterdam/openstad-app#readme",
   "dependencies": {
+    "admin": "file:admin",
+    "api": "file:api",
+    "auth": "file:auth",
+    "frontend": "file:frontend",
+    "image": "file:image",
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "knex": "^0.21.13"

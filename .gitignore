@@ -6,3 +6,4 @@ node_modules
 .idea/
 store.json
 tmp
+.DS_Store

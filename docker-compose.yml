@@ -10,7 +10,8 @@ services:
     image: "mysql:5"
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_ROOT_DATABASE}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
 
@@ -22,12 +23,13 @@ services:
       - "3310:3306"
     entrypoint:
       sh -c "
-        echo 'CREATE DATABASE IF NOT EXISTS ${AUTH_DB_NAME}; CREATE DATABASE IF NOT EXISTS ${IMAGE_DB_NAME}; CREATE DATABASE IF NOT EXISTS ${API_DATABASE};' > /docker-entrypoint-initdb.d/init.sql;
+        echo \"CREATE DATABASE IF NOT EXISTS ${AUTH_DB_NAME}; CREATE DATABASE IF NOT EXISTS ${IMAGE_DB_NAME}; CREATE DATABASE IF NOT EXISTS ${API_DATABASE}; FLUSH PRIVILEGES; GRANT ALL ON *.* TO '${MYSQL_USER}'@'%'; FLUSH PRIVILEGES;\" > /docker-entrypoint-initdb.d/init.sql;
         /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       "
     volumes:
       - database:/var/lib/mysql
     networks:
+      - default
       - database
 
   image:
@@ -39,7 +41,7 @@ services:
       APP_URL: "${IMAGE_APP_URL}"
       #needs to best to network name in depends_on of mysql
       DB_HOST: "${MYSQL_HOST}"
-      DB_USER: "root"
+      DB_USER: "${MYSQL_USER}"
       DB_PASSWORD: "${MYSQL_PASSWORD}"
       DB_NAME: "${IMAGE_DB_NAME}"
       FIRST_IMAGE_API_ACCESS_TOKEN: "${IMAGE_API_ACCESS_TOKEN}"
@@ -51,12 +53,13 @@ services:
       - ${IMAGE_PORT_API}:${IMAGE_PORT_API}
     restart: unless-stopped
     networks:
+      - default
       - database
     depends_on:
       - "mysql"
 
   admin:
-    command: npm run dev
+    # command: npm run dev
     build: admin
     environment:
       SITE_ID: "1"
@@ -78,6 +81,7 @@ services:
       - ${ADMIN_PORT}:${ADMIN_PORT}
     restart: unless-stopped
     networks:
+      - default
       - database
     depends_on:
       - "mysql"
@@ -92,7 +96,7 @@ services:
       API_URL: "${API_URL}"
       #db values
       DB_NAME: "${AUTH_DB_NAME}"
-      DB_USER: "root"
+      DB_USER: "${MYSQL_USER}"
       TEST_CERTS: 1
       DB_PASSWORD: "${MYSQL_PASSWORD}"
       DB_HOST: "${MYSQL_HOST}"
@@ -122,6 +126,7 @@ services:
       - ./auth:/home/app
       - /home/app/node_modules
     networks:
+      - default
       - database
     depends_on:
       - "mysql"
@@ -134,7 +139,7 @@ services:
       ADMIN_URL: "${ADMIN_URL}"
       API_URL: "${API_URL}"
       API_HOSTNAME: "${API_HOSTNAME}"
-      API_DATABASE_USER: "root"
+      API_DATABASE_USER: ${MYSQL_USER}
       API_DATABASE_PASSWORD: "${MYSQL_PASSWORD}"
       API_DATABASE_DATABASE: "${API_DATABASE}"
       API_DATABASE_HOST: "${MYSQL_HOST}"
@@ -163,11 +168,10 @@ services:
       - ${API_PORT}:${API_PORT}
     restart: unless-stopped
     volumes:
-        - ./api/src:/home/app/src
-        - ./api/config:/home/app/config
-        - ./api/fixtures:/home/app/fixtures
+        - ./api:/home/app
         - /home/app/node_modules
     networks:
+      - default
       - database
     depends_on:
       - "mysql"
@@ -197,19 +201,12 @@ services:
       MINIFY_JS: "${FRONTEND_MINIFY_JS}"
       COOKIE_SECURE_OFF: "${COOKIE_SECURE_OFF}"
     volumes:
-      - ./frontend/lib:/home/app/lib
-      - ./frontend/public:/home/app/public
-      - ./frontend/packages/cms/lib:/home/app/packages/cms/lib
-      - ./frontend/packages/cms/views:/home/app/packages/cms/views
-      - ./frontend/packages/cms/services:/home/app/packages/cms/services
-      - ./frontend/packages/cms/public:/home/app/packages/cms/public
-      - ./frontend/data:/home/app/data
-      - ./frontend/public/uploads:/app/public/uploads
-      - ./frontend/package.json:/app/package.json
+      - ./frontend:/home/app/
       - /home/app/node_modules
 
     restart: always
     networks:
+      - default
       - database
     links:
       - mongo:localhost
@@ -228,6 +225,7 @@ services:
       - '127.0.0.1:27018:27017'
     restart: always
     networks:
+      - default
       - database
 #
 # Volumes section
