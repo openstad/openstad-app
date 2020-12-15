@@ -59,7 +59,6 @@ services:
       - "mysql"
 
   admin:
-    # command: npm run dev
     build: admin
     environment:
       SITE_ID: "1"
