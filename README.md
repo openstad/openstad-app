@@ -26,8 +26,8 @@ Running openstad via node:
 $ source setenv
 # Install dependencies
 $ npm install --no-optional
-# Start services
-$ npm start
 # Setup databases (WARNING: This will reset your existing database)
 $ npm run db:install
+# Start services
+$ npm start
 ```
