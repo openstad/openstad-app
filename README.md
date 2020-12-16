@@ -1,6 +1,6 @@
 # Getting started
 
-See Openstad docs for getting started instructions: https://docs.openstad.amsterdam/technical/getting-started.html
+See Openstad docs for cloning and getting started instructions: https://docs.openstad.amsterdam/technical/getting-started.html
 
 ## Setup environment (docker)
 
@@ -17,15 +17,17 @@ $ docker-compose up
 $ open http://localhost:4444
 ```
 
-## WIP: Setup environment (node)
+## Setup environment (node)
 
-Running openstad via node:
+Running openstad via node requires you to setup your own MySQL and Mongo databases.
 
 ```sh
 # Setup environment
 $ source setenv
 # Install dependencies
 $ npm install --no-optional
+# Create .env files for all services
+$ npm run configure
 # Setup databases (WARNING: This will reset your existing database)
 $ npm run db:install
 # Start services

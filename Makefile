@@ -1,6 +1,6 @@
 # Create .env file if it doesn't exist
 configure:
-	@if [ ! -f ".env" ]; then cp .env.example .env; fi; 
+	@if [ ! -f ".env" ]; then cp .env.example .env; fi;
 
 # Build services
 build:

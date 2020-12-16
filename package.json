@@ -11,7 +11,8 @@
     "start:frontend": "npm run --prefix frontend dev",
     "start:image": "npm run --prefix image start",
     "test": "npm run test",
-    "db:install": "node install-databases.js"
+    "db:install": "node install-databases.js",
+    "configure": "make configure && node create-env.js"
   },
   "repository": {
     "type": "git",
