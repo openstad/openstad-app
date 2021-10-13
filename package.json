@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/Amsterdam/openstad-app#readme",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^5.0.1",
     "dotenv": "^8.2.0",
-    "knex": "^0.21.13"
+    "knex": "^0.95.11"
   }
 }
