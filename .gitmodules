@@ -1,15 +1,17 @@
 [submodule "frontend"]
-	path = frontend
+	path = openstad-frontend
 	url = https://github.com/Amsterdam/openstad-frontend
 [submodule "api"]
-	path = api
+	path = openstad-api
 	url = https://github.com/Amsterdam/openstad-api
 [submodule "auth"]
-	path = auth
+	path = openstad-oauth-server
 	url = https://github.com/Amsterdam/openstad-oauth2-server
 [submodule "image"]
-	path = image
+	path = openstad-image-server
 	url = https://github.com/Amsterdam/openstad-image-server
 [submodule "admin"]
-	path = admin
+	path = openstad-management-panel
 	url = https://github.com/Amsterdam/openstad-management-panel
+[submodule "openstad0image-server"]
+	branch = development
