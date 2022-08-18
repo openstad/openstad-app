@@ -4,6 +4,8 @@
   "description": "Bundled version of all openstad apps",
   "main": "app.js",
   "scripts": {
+    "setup": "node ./scripts/setup-all.js",
+    "start": "node ./scripts/start-all.js",
     "test": "npm run test"
   },
   "repository": {
