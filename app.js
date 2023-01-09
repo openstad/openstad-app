@@ -8,28 +8,27 @@ const { objectToAline } = require('./utils.js');
 
 // commands list
 const commands = [
-    {
-        name: 'Frontend',
-        command: `cd ./frontend && ${objectToAline(frontendConfig)} npm run dev`
-    },
-    {
-        name: 'Api',
-        command: `cd ./api && ${objectToAline(apiConfig)} npm run dev`
-    },
-    {
-        name: 'Admin',
-        command: `cd ./admin && ${objectToAline(adminConfig)} npm run dev`
-    },
-    {
-        name: 'Image',
-        command: `cd ./image && ${objectToAline(imageConfig)} node server.js`
-    },
-    {
-        name: 'Auth',
-        command: `cd ./auth && ${objectToAline(authConfig)} npm run dev`
-    },
+//  {
+//    name: 'Frontend',
+//    command: `cd ./openstad-frontend && ${objectToAline(frontendConfig)} npm run dev`
+//  },
+//  {
+//    name: 'Api',
+//    command: `cd ./openstad-api && ${objectToAline(apiConfig)} npm run dev`
+//  },
+//  {
+//    name: 'Admin',
+//    command: `cd ./openstad-management-panel && ${objectToAline(adminConfig)} npm run dev`
+//  },
+//  {
+//    name: 'Image',
+//    command: `cd ./image-server && ${objectToAline(imageConfig)} node server.js`
+//  },
+  {
+    name: 'Auth',
+    command: `cd ./openstad-management-panel && ${objectToAline(adminConfig)} npm run dev`
+  },
 ];
-
 
 // run command
 function runCommand(command, name, callback) {
@@ -44,6 +43,7 @@ function runCommand(command, name, callback) {
 
 async function execWaitForOutput(command, execOptions = {}) {
     return new Promise((resolve, reject) => {
+      console.log('++++', adminConfig);
         const childProcess = exec(command, execOptions);
 
         // stream process output to console
