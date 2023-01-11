@@ -20,7 +20,7 @@
   "homepage": "https://github.com/Amsterdam/openstad-app#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "knex": "^0.95.11",
+    "knex": "^2.4.0",
     "openssl-nodejs": "^1.0.5",
     "promise-mysql": "^5.2.0"
   }
