@@ -32,6 +32,9 @@ DB_PASSWORD=${config.OAUTH_DB_PASSWORD}
 DB_NAME=${config.OAUTH_DB_NAME}
 
 MONGO_DB_HOST=${config.OAUTH_MONGO_HOST}
+MONGO_DB_PORT=${config.OAUTH_MONGO_PORT}
+${config.ADMIN_MONGO_DB_USER && 'MONGO_DB_USER='+config.ADMIN_MONGO_DB_USER || ''}
+${config.ADMIN_MONGO_DB_PASSWORD && 'MONGO_DB_PASSWORD='+config.ADMIN_MONGO_DB_PASSWORD || ''}
 
 MAIL_SERVER_URL=${config.OAUTH_MAIL_SERVER_URL}
 MAIL_SERVER_PORT=${config.OAUTH_MAIL_SERVER_PORT}
@@ -88,10 +91,17 @@ SESSION_SECRET=${config.OAUTH_SESSION_SECRET}
     } else {
 
       console.log('------------------------------');
-      console.log('Database tables alreacdy exist - update records');
+      console.log('Database tables already exist - update records');
 
-      await connection.query('UPDATE clients SET clientId = ?, clientSecret = ? WHERE id = 1;', [config.OAUTH_FIRST_CLIENT_ID, config.OAUTH_FIRST_CLIENT_SECRET]);
-      await connection.query('UPDATE clients SET clientId = ?, clientSecret = ? WHERE id = 2;', [config.OAUTH_ADMIN_CLIENT_ID, config.OAUTH_ADMIN_CLIENT_SECRET]);
+      const siteUrl = config.FRONTEND_APP_URL;
+      const adminUrl = config.ADMIN_APP_URL;
+
+      let allowedDomains = process.env.NODE_ENV === 'development' ? ['localhost'] : [];
+      allowedDomains.push((config.API_URL || '').replace('http://', '').replace('https://', '').replace(/\/$/, ""));
+      allowedDomains = JSON.stringify(allowedDomains);
+
+      await connection.query('UPDATE clients SET siteUrl = ?, clientId = ?, clientSecret = ?, allowedDomains = ? WHERE id = 1;', [siteUrl,  config.OAUTH_FIRST_CLIENT_ID, config.OAUTH_FIRST_CLIENT_SECRET, allowedDomains]);
+      await connection.query('UPDATE clients SET siteUrl = ?, clientId = ?, clientSecret = ?, allowedDomains = ? WHERE id = 2;', [adminUrl, config.OAUTH_ADMIN_CLIENT_ID, config.OAUTH_ADMIN_CLIENT_SECRET, allowedDomains]);
 
     }
 
