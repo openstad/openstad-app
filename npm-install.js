@@ -3,6 +3,10 @@ var { exec } = require('child_process'); // native in nodeJs
 // commands list
 const commands = [
     {
+        name: 'App',
+        command: `cd . && npm i`
+    },
+    {
         name: 'Frontend',
         command: `cd ./frontend && npm i`
     },
